@@ -1,141 +1,123 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_box/utils/SizeFit.dart';
+import 'package:window_manager/window_manager.dart';
 
 class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WindowListener {
+  @override
+  void initState() {
+    windowManager.addListener(this);
+    _init();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    windowManager.removeListener(this);
+    super.dispose();
+  }
+
+  void _init() async {
+    // 添加此行以覆盖默认关闭处理程序
+    await windowManager.setPreventClose(true);
+    setState(() {});
+  }
+
   Widget build(BuildContext context) {
     SizeFit.initialize(context);
     return Scaffold(
       body: Container(
-        width: 750.0.rpx,
-        height: 750.0.rpx,
-        child: Row(
-          children: [
-            HomeLeft(),
-            HomeCenter(),
-            HomeRight(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class HomeLeft extends StatefulWidget {
-  _HomeLeftState createState() => _HomeLeftState();
-}
-
-class _HomeLeftState extends State<HomeLeft> {
-  List<Map> _icons = [
-    {
-      'id': 'avatar',
-    },
-    {
-      'id': 'message',
-    },
-    {
-      'id': 'contact',
-    },
-    {
-      'id': 'favorite',
-    },
-    {
-      'id': 'files',
-    },
-    {
-      'id': 'friend_news',
-    },
-    {
-      'id': 'video',
-    },
-    {
-      'id': 'search',
-    },
-    {
-      'id': 'miniprogram',
-    },
-    {
-      'id': 'phone',
-    },
-    {
-      'id': 'setting',
-    },
-  ];
-
-  Widget build(BuildContext context) {
-    return Container(
-      width: 50.0.rpx,
-      decoration: BoxDecoration(
-        border: Border(
-          right: BorderSide(
-            color: Colors.grey,
+          // width: 750.0.rpx,
+          // height: 750.0.rpx,
           ),
-        ),
-      ),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: _icons
-            .map((e) => Icon(
-                  Icons.ac_unit,
-                  size: 30.0.rpx,
-                ))
-            .toList(),
-      ),
     );
   }
-}
 
-class HomeCenter extends StatefulWidget {
-  _HomeCenterState createState() => _HomeCenterState();
-}
-
-class _HomeCenterState extends State<HomeCenter> {
-  List<Map> _messages = [
-    {
-      'id': '1',
-      'type': 'single',
-      'message': '你好，我是单聊',
-    },
-    {
-      'id': '2',
-      'type': 'group',
-      'message': '你好，我是群聊',
-    },
-  ];
-
-  Widget _search = Container();
-
-  Widget build(BuildContext context) {
-    return Container(
-      width: 300.0.rpx,
-      child: Column(
-        children: [
-          _search,
-          ListView.builder(
-              itemBuilder: (context, index) => Row(
-                    children: [
-                      Icon(Icons.abc_sharp),
-                      Column(
-                        children: [],
-                      ),
-                    ],
-                  ))
-        ],
-      ),
-    );
+  @override
+  void onWindowEvent(String eventName) {
+    print('[WindowManager] onWindowEvent: $eventName');
   }
-}
 
-class HomeRight extends StatefulWidget {
-  _HomeRightState createState() => _HomeRightState();
-}
+  @override
+  void onWindowClose() async {
+    bool _isPreventClose = await windowManager.isPreventClose();
+    if (_isPreventClose) {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text('Are you sure you want to close this window?'),
+            actions: [
+              TextButton(
+                child: Text('No'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text('Yes'),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  await windowManager.destroy();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
-class _HomeRightState extends State<HomeRight> {
-  Widget build(BuildContext context) {
-    return Container();
+  @override
+  void onWindowFocus() {
+    setState(() {});
+  }
+
+  @override
+  void onWindowBlur() {
+    // do something
+  }
+
+  @override
+  void onWindowMaximize() {
+    // do something
+  }
+
+  @override
+  void onWindowUnmaximize() {
+    // do something
+  }
+
+  @override
+  void onWindowMinimize() {
+    // do something
+  }
+
+  @override
+  void onWindowRestore() {
+    // do something
+  }
+
+  @override
+  void onWindowResize() {
+    // do something
+  }
+
+  @override
+  void onWindowMove() {
+    // do something
+  }
+
+  @override
+  void onWindowEnterFullScreen() {
+    // do something
+  }
+
+  @override
+  void onWindowLeaveFullScreen() {
+    // do something
   }
 }
