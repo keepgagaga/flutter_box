@@ -1,25 +1,29 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'pages/HomePage.dart';
+import 'pages/desktop/Home.dart' as Desktop;
+import 'pages/mobile/Home.dart' as Mobile;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // 必须加上这一行。
-  await windowManager.ensureInitialized();
+  if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
+    await windowManager.ensureInitialized();
 
-  WindowOptions windowOptions = WindowOptions(
-    size: Size(800, 600),
-    center: true,
-    backgroundColor: Colors.transparent,
-    skipTaskbar: false,
-    titleBarStyle: TitleBarStyle.hidden,
-  );
+    WindowOptions windowOptions = WindowOptions(
+      size: Size(800, 600),
+      center: true,
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.hidden,
+    );
 
-  windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
 
   runApp(const MyApp());
 }
@@ -36,7 +40,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: (Platform.isMacOS || Platform.isWindows || Platform.isLinux)
+          ? Desktop.Home()
+          : Mobile.Home(),
     );
   }
 }

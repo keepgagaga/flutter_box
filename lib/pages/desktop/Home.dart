@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_box/utils/SizeFit.dart';
 import 'package:window_manager/window_manager.dart';
 
-class HomePage extends StatefulWidget {
-  _HomePageState createState() => _HomePageState();
+class Home extends StatefulWidget {
+  _HomeState createState() => _HomeState();
 }
 
-class _HomePageState extends State<HomePage> with WindowListener {
+class _HomeState extends State<Home> with WindowListener {
   @override
   void initState() {
     windowManager.addListener(this);
@@ -29,6 +29,10 @@ class _HomePageState extends State<HomePage> with WindowListener {
   Widget build(BuildContext context) {
     SizeFit.initialize(context);
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Flutter Box'),
+        toolbarHeight: 30,
+      ),
       body: Container(
           // width: 750.0.rpx,
           // height: 750.0.rpx,
