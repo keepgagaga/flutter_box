@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_box/components/LeftArea.dart';
 import 'package:flutter_box/utils/SizeFit.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -28,21 +29,39 @@ class _HomeState extends State<Home> with WindowListener {
 
   Widget build(BuildContext context) {
     SizeFit.initialize(context);
+    double leftW = 80;
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Flutter Box'),
-        toolbarHeight: 30,
-      ),
+      // appBar: AppBar(
+      //   title: Text('Flutter Box'),
+      //   toolbarHeight: 30,
+      // ),
       body: Container(
-          // width: 750.0.rpx,
-          // height: 750.0.rpx,
-          ),
+        child: Row(
+          children: [
+            LeftArea(),
+            Container(
+              width: leftW * 3,
+              height: size.height,
+              color: Colors.blue,
+            ),
+            Container(
+              width: (size.width - leftW * 4) < 480
+                  ? 480
+                  : (size.width - leftW * 4),
+              height: size.height,
+              color: Colors.amberAccent,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   @override
   void onWindowEvent(String eventName) {
-    print('[WindowManager] onWindowEvent: $eventName');
+    // print('[WindowManager] onWindowEvent: $eventName');
   }
 
   @override
