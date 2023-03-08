@@ -1,14 +1,18 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'pages/desktop/Home.dart' as Desktop;
 import 'pages/mobile/Home.dart' as Mobile;
+import 'pages/web/Home.dart' as Web;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
+  if (kIsWeb) {
+    runApp(const MyApp());
+  } else if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
     await windowManager.ensureInitialized();
 
     WindowOptions windowOptions = WindowOptions(
@@ -25,8 +29,6 @@ void main() async {
       await windowManager.focus();
     });
   }
-
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -41,9 +43,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: (Platform.isMacOS || Platform.isWindows || Platform.isLinux)
-          ? Desktop.Home()
-          : Mobile.Home(),
+      home: kIsWeb
+          ? Web.Home()
+          : ((Platform.isMacOS || Platform.isWindows || Platform.isLinux)
+              ? Desktop.Home()
+              : Mobile.Home()),
     );
   }
 }
