@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_box/common/themeConfig.dart';
+import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'pages/desktop/Home.dart' as Desktop;
@@ -11,7 +13,12 @@ import 'pages/web/Home.dart' as Web;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
-    runApp(const MyApp());
+    runApp(
+      ChangeNotifierProvider<ThemeConfig>(
+        create: (_) => ThemeConfig(ThemeData.light()),
+        child: MainApp(),
+      ),
+    );
   } else if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
     await windowManager.ensureInitialized();
 
@@ -31,6 +38,28 @@ void main() async {
   }
 }
 
+class MainApp extends StatefulWidget {
+  _MainAppState createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  Widget build(context) {
+    final themeProvider = Provider.of<ThemeConfig>(context);
+    final themeData = themeProvider.getTheme;
+
+    return MaterialApp(
+      title: 'Flutter Box',
+      theme: themeData,
+      debugShowCheckedModeBanner: false,
+      home: kIsWeb
+          ? Web.Home()
+          : ((Platform.isMacOS || Platform.isWindows || Platform.isLinux)
+              ? Desktop.Home()
+              : Mobile.Home()),
+    );
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -41,7 +70,14 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Box',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        brightness: Brightness.light,
+        backgroundColor: Color(0xffE8DEF8),
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        backgroundColor: Colors.black,
+      ),
+      themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       home: kIsWeb
           ? Web.Home()
