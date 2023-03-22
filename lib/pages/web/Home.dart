@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_box/common/LocalConfig.dart';
 import 'package:flutter_box/common/ThemeConfig.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
@@ -10,6 +12,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool _isDark = false;
   var themeProvider;
+  Locale _localValue = Locale('zh');
+  List<Locale> _locales = [Locale('zh'), Locale('en')];
+  var localProvider;
 
   void _onThemeChanged(v) async {
     final prefs = await SharedPreferences.getInstance();
@@ -24,8 +29,16 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void _onLocalChanged(v) {
+    setState(() {
+      _localValue = v;
+      localProvider.setLocal(v);
+    });
+  }
+
   Widget build(context) {
     themeProvider = Provider.of<ThemeConfig>(context);
+    localProvider = Provider.of<LocalConfig>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -36,15 +49,33 @@ class _HomeState extends State<Home> {
               'Flutter Box',
               // style: TextStyle(color: Colors.black),
             ),
-            Switch(value: _isDark, onChanged: _onThemeChanged),
+            Row(
+              children: [
+                Switch(value: _isDark, onChanged: _onThemeChanged),
+                DropdownButton(
+                  value: _localValue,
+                  items: _locales
+                      .map(
+                        (l) => DropdownMenuItem(
+                          value: l,
+                          child: Text(
+                            l.toString(),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: _onLocalChanged,
+                ),
+              ],
+            ),
           ],
         ),
         // backgroundColor: Color(0xffE8DEF8),
       ),
       body: Center(
         child: Container(
-            // color: Color(0xffF2EBE0),
-            ),
+          child: Text(AppLocalizations.of(context)!.helloWorld),
+        ),
       ),
     );
   }
