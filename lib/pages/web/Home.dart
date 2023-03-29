@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_box/common/LocalConfig.dart';
 import 'package:flutter_box/common/ThemeConfig.dart';
+import 'package:flutter_box/components/AnimatedAlignExample.dart';
+import 'package:flutter_box/components/AnimatedContainerExample.dart';
+import 'package:flutter_box/components/AnimatedPaddingExample.dart';
+import 'package:flutter_box/components/AnimatedPositionedExample.dart';
+import 'package:flutter_box/components/TweenAnimationBuilderExample.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -40,41 +45,74 @@ class _HomeState extends State<Home> {
     themeProvider = Provider.of<ThemeConfig>(context);
     localProvider = Provider.of<LocalConfig>(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Flutter Box',
-              // style: TextStyle(color: Colors.black),
-            ),
-            Row(
-              children: [
-                Switch(value: _isDark, onChanged: _onThemeChanged),
-                DropdownButton(
-                  value: _localValue,
-                  items: _locales
-                      .map(
-                        (l) => DropdownMenuItem(
-                          value: l,
-                          child: Text(
-                            l.toString(),
-                          ),
+    AppBar _appBar = AppBar(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Flutter Box',
+            // style: TextStyle(color: Colors.black),
+          ),
+          Row(
+            children: [
+              Switch(value: _isDark, onChanged: _onThemeChanged),
+              DropdownButton(
+                value: _localValue,
+                items: _locales
+                    .map(
+                      (l) => DropdownMenuItem(
+                        value: l,
+                        child: Text(
+                          l.toString(),
                         ),
-                      )
-                      .toList(),
-                  onChanged: _onLocalChanged,
-                ),
-              ],
-            ),
-          ],
-        ),
-        // backgroundColor: Color(0xffE8DEF8),
+                      ),
+                    )
+                    .toList(),
+                onChanged: _onLocalChanged,
+              ),
+            ],
+          ),
+        ],
       ),
+      // backgroundColor: Color(0xffE8DEF8),
+    );
+
+    return Scaffold(
+      appBar: _appBar,
       body: Center(
         child: Container(
-          child: Text(AppLocalizations.of(context)!.helloWorld),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 200,
+                child: Column(
+                  children: [
+                    Text('隐式动画'),
+                    ListView(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        AnimatedContainerExample(),
+                        AnimatedPaddingExample(),
+                        AnimatedAlignExample(),
+                        TweenAnimationBuilderExample(),
+                        AnimatedPositionedExample(),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 20),
+              Column(
+                children: [
+                  Text('显式动画'),
+                  Column(
+                    children: [],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
