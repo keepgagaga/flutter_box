@@ -5,6 +5,7 @@ import 'package:flutter_box/components/AnimatedAlignExample.dart';
 import 'package:flutter_box/components/AnimatedContainerExample.dart';
 import 'package:flutter_box/components/AnimatedPaddingExample.dart';
 import 'package:flutter_box/components/AnimatedPositionedExample.dart';
+import 'package:flutter_box/components/RotateAnima.dart';
 import 'package:flutter_box/components/TweenAnimationBuilderExample.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -107,7 +108,9 @@ class _HomeState extends State<Home> {
                 children: [
                   Text('显式动画'),
                   Column(
-                    children: [],
+                    children: [
+                      RotateAnima(),
+                    ],
                   ),
                 ],
               ),
