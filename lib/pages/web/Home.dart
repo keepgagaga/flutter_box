@@ -6,6 +6,7 @@ import 'package:flutter_box/components/AnimatedContainerExample.dart';
 import 'package:flutter_box/components/AnimatedPaddingExample.dart';
 import 'package:flutter_box/components/AnimatedPositionedExample.dart';
 import 'package:flutter_box/components/AnimatedText.dart';
+import 'package:flutter_box/components/InnerShadowExample.dart';
 import 'package:flutter_box/components/RotateAnima.dart';
 import 'package:flutter_box/components/TweenAnimationBuilderExample.dart';
 import 'package:provider/provider.dart';
@@ -114,6 +115,7 @@ class _HomeState extends State<Home> {
                       children: [
                         RotateAnima(),
                         AnimatedText(),
+                        InnerShadowExample(),
                       ],
                     ),
                   ),

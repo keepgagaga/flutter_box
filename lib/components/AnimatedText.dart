@@ -29,21 +29,18 @@ class _AnimatedTextState extends State<AnimatedText>
     1.0
   ];
   late AnimationController _ctrl;
-  final Duration animDuration = const Duration(milliseconds: 1000);
+  final Duration animDuration = const Duration(seconds: 3);
 
   @override
   void initState() {
     super.initState();
     _ctrl = AnimationController(vsync: this, duration: animDuration);
+    _ctrl.repeat();
   }
 
   void dispose() {
     _ctrl.dispose();
     super.dispose();
-  }
-
-  void _startAnim() {
-    _ctrl.forward(from: 0);
   }
 
   Paint getPaint() {
@@ -63,20 +60,17 @@ class _AnimatedTextState extends State<AnimatedText>
   }
 
   Widget build(context) {
-    return GestureDetector(
-      onTap: _startAnim,
-      child: AnimatedBuilder(
-        animation: _ctrl,
-        builder: (context, child) {
-          return Text(
-            'Sand',
-            style: TextStyle(
-              fontSize: 120,
-              foreground: getPaint(),
-            ),
-          );
-        },
-      ),
+    return AnimatedBuilder(
+      animation: _ctrl,
+      builder: (context, child) {
+        return Text(
+          'Sand',
+          style: TextStyle(
+            fontSize: 120,
+            foreground: getPaint(),
+          ),
+        );
+      },
     );
   }
 }
