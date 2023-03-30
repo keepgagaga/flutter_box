@@ -5,6 +5,7 @@ import 'package:flutter_box/components/AnimatedAlignExample.dart';
 import 'package:flutter_box/components/AnimatedContainerExample.dart';
 import 'package:flutter_box/components/AnimatedPaddingExample.dart';
 import 'package:flutter_box/components/AnimatedPositionedExample.dart';
+import 'package:flutter_box/components/AnimatedText.dart';
 import 'package:flutter_box/components/RotateAnima.dart';
 import 'package:flutter_box/components/TweenAnimationBuilderExample.dart';
 import 'package:provider/provider.dart';
@@ -89,16 +90,17 @@ class _HomeState extends State<Home> {
                 child: Column(
                   children: [
                     Text('隐式动画'),
-                    ListView(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      children: [
-                        AnimatedContainerExample(),
-                        AnimatedPaddingExample(),
-                        AnimatedAlignExample(),
-                        TweenAnimationBuilderExample(),
-                        AnimatedPositionedExample(),
-                      ],
+                    Expanded(
+                      child: ListView(
+                        // shrinkWrap: true,
+                        children: [
+                          AnimatedContainerExample(),
+                          AnimatedPaddingExample(),
+                          AnimatedAlignExample(),
+                          TweenAnimationBuilderExample(),
+                          AnimatedPositionedExample(),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -107,10 +109,13 @@ class _HomeState extends State<Home> {
               Column(
                 children: [
                   Text('显式动画'),
-                  Column(
-                    children: [
-                      RotateAnima(),
-                    ],
+                  Expanded(
+                    child: Column(
+                      children: [
+                        RotateAnima(),
+                        AnimatedText(),
+                      ],
+                    ),
                   ),
                 ],
               ),
