@@ -8,6 +8,7 @@ import 'package:flutter_box/components/AnimatedPositionedExample.dart';
 import 'package:flutter_box/components/AnimatedText.dart';
 import 'package:flutter_box/components/InnerShadowExample.dart';
 import 'package:flutter_box/components/RotateAnima.dart';
+import 'package:flutter_box/components/StopWatch.dart';
 import 'package:flutter_box/components/TweenAnimationBuilderExample.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -93,7 +94,6 @@ class _HomeState extends State<Home> {
                     Text('隐式动画'),
                     Expanded(
                       child: ListView(
-                        // shrinkWrap: true,
                         children: [
                           AnimatedContainerExample(),
                           AnimatedPaddingExample(),
@@ -107,19 +107,38 @@ class _HomeState extends State<Home> {
                 ),
               ),
               SizedBox(width: 20),
-              Column(
-                children: [
-                  Text('显式动画'),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        RotateAnima(),
-                        AnimatedText(),
-                        InnerShadowExample(),
-                      ],
+              SizedBox(
+                width: 400,
+                child: Column(
+                  children: [
+                    Text('显式动画'),
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          RotateAnima(),
+                          AnimatedText(),
+                          InnerShadowExample(),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+              SizedBox(width: 20),
+              SizedBox(
+                width: 300,
+                child: Column(
+                  children: [
+                    Text('绘制'),
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          // StopWatch(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

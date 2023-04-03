@@ -1,4 +1,4 @@
-# 想做的很多，但是拖延症这事真的没辙，只能没事多激励自己了
+# 一个跨所有平台的 app，包括 Android、iOS、macOS、Windows、Linux、web，主要是为了探索各个平台的共性和差异，因为很多组件为各大平台上和在 web 上差不多，前期为了便于分享，会优先做 web 平台，web 访问地址：https://flutter-box.vercel.app/#/
 
 TODO:
 * 新版国际化 web ✅
@@ -16,7 +16,3 @@ TODO:
 * 推送通知 iOS Android
 * 地图 SDK 嵌入
 * 权限索取处理
-
-# web 访问地址：https://flutter-box.vercel.app/#/
-
-首次加载需要一点时间，耐心等待下，自己的服务器可以优化下，白嫖的就没办法了。

@@ -30,16 +30,21 @@ class _InnerShadowExampleState extends State<InnerShadowExample>
   }
 
   Widget build(context) {
-    return InnerShadow(
-      color: Color(0xFF3DF30B),
-      offset: Offset(15, 15),
-      blur: _breatheAnimation.value,
-      child: Container(
+    return UnconstrainedBox(
+      child: SizedBox(
         width: 300,
         height: 300,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          // borderRadius: BorderRadius.circular(150),
+        child: InnerShadow(
+          color: Color(0xFF3DF30B),
+          offset: Offset(30, 30),
+          blur: _breatheAnimation.value,
+          child: Container(
+            // width: 300,
+            // height: 300,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+          ),
         ),
       ),
     );
