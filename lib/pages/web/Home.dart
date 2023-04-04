@@ -8,7 +8,7 @@ import 'package:flutter_box/components/AnimatedPositionedExample.dart';
 import 'package:flutter_box/components/AnimatedText.dart';
 import 'package:flutter_box/components/InnerShadowExample.dart';
 import 'package:flutter_box/components/RotateAnima.dart';
-import 'package:flutter_box/components/StopWatch.dart';
+import 'package:flutter_box/components/StopWatch/StopWatch.dart';
 import 'package:flutter_box/components/TweenAnimationBuilderExample.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -116,8 +116,8 @@ class _HomeState extends State<Home> {
                       child: ListView(
                         children: [
                           RotateAnima(),
-                          AnimatedText(),
-                          InnerShadowExample(),
+                          // AnimatedText(),
+                          // InnerShadowExample(),
                         ],
                       ),
                     ),
@@ -133,7 +133,7 @@ class _HomeState extends State<Home> {
                     Expanded(
                       child: ListView(
                         children: [
-                          // StopWatch(),
+                          StopWatch(),
                         ],
                       ),
                     ),
