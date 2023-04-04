@@ -84,7 +84,7 @@ class StopWatchPainter extends CustomPainter {
     int milliseconds = duration.inMilliseconds % 1000;
     String commonStr =
         '${minus.toString().padLeft(2, "0")}:${second.toString().padLeft(2, "0")}';
-    String highlightStr = ".${(milliseconds ~/ 10).toString().padLeft(2, "0")}";
+    String highlightStr = ":${(milliseconds ~/ 10).toString().padLeft(2, "0")}";
 
     void drawText(Canvas canvas) {
       textPainter.text = TextSpan(

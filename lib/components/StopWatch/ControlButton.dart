@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'StopWatchState.dart';
+
 class ControlButton extends StatelessWidget {
   final StopWatchType state;
   final VoidCallback? toggle;
@@ -47,10 +49,4 @@ class ControlButton extends StatelessWidget {
       ),
     );
   }
-}
-
-enum StopWatchType {
-  none,
-  stopped,
-  running,
 }
