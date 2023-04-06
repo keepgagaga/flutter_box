@@ -3,16 +3,20 @@
 TODO:
 * 新版国际化 web ✅
 * 主题配色 web ✅
-* 使用 Provider 做状态管理 web ✅
+* Provider 状态管理 web ✅
+* Bloc 状态管理 
 * 多图滚动及缓存
+* 图片编辑保存
 * 视频连续播放
 * K 线图
 * 自定义 context 菜单
 * 菜单栏和级联菜单
 * 动画效果合集
 * 路由管理
-* 显式动画集合
-* 隐式动画集合
+* 显式动画demo集合 web ✅
+* 隐式动画demo集合 web ✅
+* 绘制demo集合 web ✅
 * 推送通知 iOS Android
 * 地图 SDK 嵌入
 * 权限索取处理
+

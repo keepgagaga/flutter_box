@@ -1,3 +1,5 @@
+part of 'StopWatchBloc.dart';
+
 class StopWatchState {
   final StopWatchType type;
   final List<TimeRecord> durationRecord;

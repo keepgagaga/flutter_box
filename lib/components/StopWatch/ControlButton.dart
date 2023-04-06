@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'StopWatchState.dart';
+import 'package:flutter_box/components/StopWatch/StopWatchBloc.dart';
 
 class ControlButton extends StatelessWidget {
   final StopWatchType state;

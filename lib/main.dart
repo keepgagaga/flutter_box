@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_box/common/LocalConfig.dart';
 import 'package:flutter_box/common/ThemeConfig.dart';
+import 'package:flutter_box/components/StopWatch/StopWatchBloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
@@ -25,6 +27,9 @@ void main() async {
           ),
           ChangeNotifierProvider<LocalConfig>(
             create: (_) => LocalConfig(Locale('zh')),
+          ),
+          BlocProvider<StopWatchBloc>(
+            create: (_) => StopWatchBloc(),
           ),
         ],
         child: MainApp(),

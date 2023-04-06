@@ -1,3 +1,5 @@
+part of 'StopWatchBloc.dart';
+
 abstract class StopWatchEvent {
   const StopWatchEvent();
 }
