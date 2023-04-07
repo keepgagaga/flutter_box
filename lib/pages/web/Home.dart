@@ -11,7 +11,6 @@ import 'package:flutter_box/components/RotateAnima.dart';
 import 'package:flutter_box/components/StopWatch/StopWatch.dart';
 import 'package:flutter_box/components/TweenAnimationBuilderExample.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Home extends StatefulWidget {
@@ -19,23 +18,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool _isDark = false;
   var themeProvider;
   Locale _localValue = Locale('zh');
   List<Locale> _locales = [Locale('zh'), Locale('en')];
   var localProvider;
 
-  void _onThemeChanged(v) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isDark', v);
-    setState(() {
-      _isDark = v;
-      if (v == true) {
-        themeProvider.setTheme(ThemeData.dark());
-      } else {
-        themeProvider.setTheme(ThemeData.light());
-      }
-    });
+  void _onThemeChange() {
+    themeProvider.setTheme(themeProvider.getTheme == ThemeData.light()
+        ? ThemeData.dark()
+        : ThemeData.light());
   }
 
   void _onLocalChanged(v) {
@@ -59,7 +50,15 @@ class _HomeState extends State<Home> {
           ),
           Row(
             children: [
-              Switch(value: _isDark, onChanged: _onThemeChanged),
+              GestureDetector(
+                onTap: _onThemeChange,
+                child: Icon(
+                  themeProvider.getTheme == ThemeData.light()
+                      ? Icons.light_mode
+                      : Icons.dark_mode,
+                ),
+              ),
+              SizedBox(width: 20),
               DropdownButton(
                 value: _localValue,
                 items: _locales
@@ -91,7 +90,7 @@ class _HomeState extends State<Home> {
                 width: 200,
                 child: Column(
                   children: [
-                    Text('隐式动画'),
+                    Text(AppLocalizations.of(context)!.implicitlyAnima),
                     Expanded(
                       child: ListView(
                         children: [
@@ -111,7 +110,7 @@ class _HomeState extends State<Home> {
                 width: 400,
                 child: Column(
                   children: [
-                    Text('显式动画'),
+                    Text(AppLocalizations.of(context)!.animatedWidget),
                     Expanded(
                       child: ListView(
                         children: [
@@ -129,7 +128,7 @@ class _HomeState extends State<Home> {
                 width: 300,
                 child: Column(
                   children: [
-                    Text('绘制'),
+                    Text(AppLocalizations.of(context)!.draw),
                     Expanded(
                       child: ListView(
                         children: [

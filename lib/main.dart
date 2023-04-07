@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_box/common/LocalConfig.dart';
 import 'package:flutter_box/common/ThemeConfig.dart';
 import 'package:flutter_box/components/StopWatch/StopWatchBloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -34,10 +33,6 @@ void main() async {
         ],
         child: MainApp(),
       ),
-      // ChangeNotifierProvider<ThemeConfig>(
-      //   create: (_) => ThemeConfig(ThemeData.light()),
-      //   child: MainApp(),
-      // ),
     );
   } else if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
     await windowManager.ensureInitialized();
@@ -55,6 +50,22 @@ void main() async {
       await windowManager.show();
       await windowManager.focus();
     });
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeConfig>(
+            create: (_) => ThemeConfig(ThemeData.light()),
+          ),
+          ChangeNotifierProvider<LocalConfig>(
+            create: (_) => LocalConfig(Locale('zh')),
+          ),
+          BlocProvider<StopWatchBloc>(
+            create: (_) => StopWatchBloc(),
+          ),
+        ],
+        child: MainApp(),
+      ),
+    );
   }
 }
 
@@ -70,46 +81,20 @@ class _MainAppState extends State<MainApp> {
     final localProvider = Provider.of<LocalConfig>(context);
     final localData = localProvider.getLocal;
 
+    Widget getHome() {
+      if (kIsWeb) return Web.Home();
+      if (Platform.isAndroid || Platform.isIOS) return Mobile.Home();
+      return Desktop.Home();
+    }
+
     return MaterialApp(
       title: 'Flutter Box',
       theme: themeData,
       debugShowCheckedModeBanner: false,
-      home: kIsWeb
-          ? Web.Home()
-          : ((Platform.isMacOS || Platform.isWindows || Platform.isLinux)
-              ? Desktop.Home()
-              : Mobile.Home()),
+      home: getHome(),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: localData,
-    );
-  }
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Box',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.light,
-        backgroundColor: Color(0xffE8DEF8),
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        backgroundColor: Colors.black,
-      ),
-      themeMode: ThemeMode.dark,
-      debugShowCheckedModeBanner: false,
-      home: kIsWeb
-          ? Web.Home()
-          : ((Platform.isMacOS || Platform.isWindows || Platform.isLinux)
-              ? Desktop.Home()
-              : Mobile.Home()),
     );
   }
 }

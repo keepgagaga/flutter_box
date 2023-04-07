@@ -4,7 +4,7 @@ TODO:
 * 新版国际化 web ✅
 * 主题配色 web ✅
 * Provider 状态管理 web ✅
-* Bloc 状态管理 
+* Bloc 状态管理 ✅
 * 多图滚动及缓存
 * 图片编辑保存
 * 视频连续播放
@@ -19,4 +19,5 @@ TODO:
 * 推送通知 iOS Android
 * 地图 SDK 嵌入
 * 权限索取处理
+* 编辑器 macOS 
 
