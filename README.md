@@ -24,4 +24,6 @@ TODO:
 * 热更新 Android desktop
 * flutter web 嵌入传统网页
 * flutter web 启动动画 ✅
+* 音频播放 Linux 
+* 网络状态监测
 

@@ -46,7 +46,6 @@ class _HomeState extends State<Home> {
         children: [
           Text(
             'Flutter Box',
-            // style: TextStyle(color: Colors.black),
           ),
           Row(
             children: [
@@ -86,59 +85,59 @@ class _HomeState extends State<Home> {
         child: Container(
           child: Row(
             children: [
-              SizedBox(
-                width: 200,
-                child: Column(
-                  children: [
-                    Text(AppLocalizations.of(context)!.implicitlyAnima),
-                    Expanded(
-                      child: ListView(
-                        children: [
-                          AnimatedContainerExample(),
-                          AnimatedPaddingExample(),
-                          AnimatedAlignExample(),
-                          TweenAnimationBuilderExample(),
-                          AnimatedPositionedExample(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 20),
-              SizedBox(
-                width: 400,
-                child: Column(
-                  children: [
-                    Text(AppLocalizations.of(context)!.animatedWidget),
-                    Expanded(
-                      child: ListView(
-                        children: [
-                          RotateAnima(),
-                          // AnimatedText(),
-                          // InnerShadowExample(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 20),
-              SizedBox(
-                width: 300,
-                child: Column(
-                  children: [
-                    Text(AppLocalizations.of(context)!.draw),
-                    Expanded(
-                      child: ListView(
-                        children: [
-                          StopWatch(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // SizedBox(
+              //   width: 200,
+              //   child: Column(
+              //     children: [
+              //       Text(AppLocalizations.of(context)!.implicitlyAnima),
+              //       Expanded(
+              //         child: ListView(
+              //           children: [
+              //             AnimatedContainerExample(),
+              //             AnimatedPaddingExample(),
+              //             AnimatedAlignExample(),
+              //             TweenAnimationBuilderExample(),
+              //             AnimatedPositionedExample(),
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // SizedBox(width: 20),
+              // SizedBox(
+              //   width: 400,
+              //   child: Column(
+              //     children: [
+              //       Text(AppLocalizations.of(context)!.animatedWidget),
+              //       Expanded(
+              //         child: ListView(
+              //           children: [
+              //             RotateAnima(),
+              //             // AnimatedText(),
+              //             // InnerShadowExample(),
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // SizedBox(width: 20),
+              // SizedBox(
+              //   width: 300,
+              //   child: Column(
+              //     children: [
+              //       Text(AppLocalizations.of(context)!.draw),
+              //       Expanded(
+              //         child: ListView(
+              //           children: [
+              //             StopWatch(),
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),
