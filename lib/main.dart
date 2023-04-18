@@ -50,23 +50,23 @@ void main() async {
       await windowManager.show();
       await windowManager.focus();
     });
-    runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeConfig>(
-            create: (_) => ThemeConfig(ThemeData.light()),
-          ),
-          ChangeNotifierProvider<LocalConfig>(
-            create: (_) => LocalConfig(Locale('zh')),
-          ),
-          BlocProvider<StopWatchBloc>(
-            create: (_) => StopWatchBloc(),
-          ),
-        ],
-        child: MainApp(),
-      ),
-    );
   }
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeConfig>(
+          create: (_) => ThemeConfig(ThemeData.light()),
+        ),
+        ChangeNotifierProvider<LocalConfig>(
+          create: (_) => LocalConfig(Locale('zh')),
+        ),
+        BlocProvider<StopWatchBloc>(
+          create: (_) => StopWatchBloc(),
+        ),
+      ],
+      child: MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatefulWidget {
