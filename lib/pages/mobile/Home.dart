@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_box/components/PhotoWaterMark.dart/PhotoWatermark.dart';
+import 'package:flutter_box/components/PhotoWaterMark/PhotoWatermark.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
@@ -15,6 +17,23 @@ class _HomeState extends State<Home> {
     }
   }
 
+  Future<File> _takeWaterMark(context) async {
+    return await Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation) {
+          return PhotoWaterMark();
+        },
+        transitionsBuilder: ((context, animation, secondaryAnimation, child) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            )),
+      ),
+    );
+  }
+
   Widget build(context) {
     return Scaffold(
       appBar: AppBar(
@@ -27,10 +46,16 @@ class _HomeState extends State<Home> {
             childAspectRatio: 1.0,
           ),
           children: [
-            GestureDetector(
-              onTap: () => _navTo('photo'),
-              child: Icon(Icons.ac_unit),
-            ),
+            // GestureDetector(
+            //   behavior: HitTestBehavior.opaque,
+            //   onTap: () => _takeWaterMark,
+            //   child: Icon(Icons.ac_unit),
+            // ),
+            IconButton(
+                onPressed: () {
+                  _takeWaterMark(context);
+                },
+                icon: Icon(Icons.image)),
             Icon(Icons.airport_shuttle),
             Icon(Icons.all_inclusive),
             Icon(Icons.beach_access),
