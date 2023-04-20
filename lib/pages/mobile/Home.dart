@@ -46,21 +46,56 @@ class _HomeState extends State<Home> {
             childAspectRatio: 1.0,
           ),
           children: [
-            // GestureDetector(
-            //   behavior: HitTestBehavior.opaque,
-            //   onTap: () => _takeWaterMark,
-            //   child: Icon(Icons.ac_unit),
-            // ),
-            IconButton(
+            Container(
+              alignment: Alignment.center,
+              child: ElevatedButton.icon(
                 onPressed: () {
                   _takeWaterMark(context);
                 },
-                icon: Icon(Icons.image)),
-            Icon(Icons.airport_shuttle),
-            Icon(Icons.all_inclusive),
-            Icon(Icons.beach_access),
-            Icon(Icons.cake),
-            Icon(Icons.free_breakfast)
+                icon: Icon(Icons.photo_camera),
+                label: Text('watermark'),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: ElevatedButton.icon(
+                onPressed: () {},
+                icon: Icon(Icons.link),
+                label: Text('webview'),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: ElevatedButton.icon(
+                onPressed: () {},
+                icon: Icon(Icons.beach_access),
+                label: Text('permission'),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: ElevatedButton.icon(
+                onPressed: () {},
+                icon: Icon(Icons.all_inclusive),
+                label: Text('demo'),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: ElevatedButton.icon(
+                onPressed: () {},
+                icon: Icon(Icons.cake),
+                label: Text('demo'),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: ElevatedButton.icon(
+                onPressed: () {},
+                icon: Icon(Icons.free_breakfast),
+                label: Text('demo'),
+              ),
+            ),
           ],
         ),
       ),

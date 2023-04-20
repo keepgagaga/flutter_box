@@ -114,8 +114,9 @@ class _PhotoWaterMarkState extends State<PhotoWaterMark>
       ui.Image _tempImage = await boundary.toImage(pixelRatio: 2.0);
       ByteData? byteData =
           await _tempImage.toByteData(format: ui.ImageByteFormat.png);
-      Uint8List imageBytes = byteData!.buffer.asUint8List();
-      String basePath = await findSavePath('');
+      Uint8List imageBytes =
+          byteData!.buffer.asUint8List(); // 图片数据， 可使用 Image.memory 加载显示
+      String basePath = await findSavePath();
       File file = File('$basePath${DateTime.now().millisecondsSinceEpoch}.jpg');
       file.writeAsBytesSync(imageBytes);
       Navigator.of(context).pop(file);
@@ -145,8 +146,7 @@ class _PhotoWaterMarkState extends State<PhotoWaterMark>
         File(_image!.path),
         fit: BoxFit.fitWidth,
       );
-    } else if (_cameraController != null &&
-        _cameraController.value.isInitialized) {
+    } else if (_cameraController.value.isInitialized) {
       final double screenWidth = MediaQuery.of(context).size.width;
       _area = ClipRect(
         child: OverflowBox(
@@ -216,27 +216,33 @@ class _PhotoWaterMarkState extends State<PhotoWaterMark>
   Widget _buildAction() {
     return Positioned(
       bottom: 50,
-      left: 50,
       child: _takeStatus == TakeStatus.confirm
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                OutlinedButton(
-                  onPressed: _cancel,
-                  child: Icon(Icons.close),
-                ),
-                OutlinedButton(
-                  onPressed: _confirm,
-                  child: Icon(Icons.confirmation_num),
-                ),
-              ],
+          ? Container(
+              padding: EdgeInsets.only(left: 30, right: 30),
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: _cancel,
+                    icon: Icon(Icons.close),
+                  ),
+                  IconButton(
+                    onPressed: _confirm,
+                    icon: Icon(Icons.confirmation_num),
+                  ),
+                ],
+              ),
             )
-          : OutlinedButton(
-              onPressed: _takePicture,
-              child: Icon(
-                Icons.camera,
-                color: Colors.white,
-                size: 48,
+          : Container(
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.center,
+              child: IconButton(
+                onPressed: _takePicture,
+                icon: Icon(
+                  Icons.photo_camera,
+                  size: 40,
+                ),
               ),
             ),
     );
