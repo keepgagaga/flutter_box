@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_box/common/LocalConfig.dart';
+import 'package:flutter_box/common/ThemeConfig.dart';
 import 'package:flutter_box/components/AnimatedAlignExample.dart';
 import 'package:flutter_box/components/AnimatedContainerExample.dart';
 import 'package:flutter_box/components/AnimatedPaddingExample.dart';
@@ -11,7 +13,9 @@ import 'package:flutter_box/components/TweenAnimationBuilderExample.dart';
 import 'package:flutter_box/pages/web/components/CustomAppbar.dart';
 import 'package:flutter_box/pages/web/components/LeftNav.dart';
 import 'package:flutter_box/pages/web/components/RightContent.dart';
+import 'package:flutter_box/utils/RandomColor.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
@@ -19,6 +23,19 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _navIndex = 0;
+  late ThemeConfig themeProvider;
+  late LocalConfig localProvider;
+  List<Locale> _locales = [Locale('zh'), Locale('en')];
+
+  void _onThemeChange() {
+    themeProvider.setTheme(themeProvider.getTheme == ThemeData.light()
+        ? ThemeData.dark()
+        : ThemeData.light());
+  }
+
+  void _onLocalChanged(v) {
+    localProvider.setLocal(v);
+  }
 
   void _onNavChange(i) {
     setState(() {
@@ -27,8 +44,52 @@ class _HomeState extends State<Home> {
   }
 
   Widget build(context) {
+    themeProvider = Provider.of<ThemeConfig>(context);
+    localProvider = Provider.of<LocalConfig>(context);
+
     return Scaffold(
-      appBar: CustomAppbar(),
+      appBar: AppBar(
+        backgroundColor: RandomColor.getColor(),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Flutter Box',
+              style: TextStyle(
+                color: RandomColor.getColor(),
+              ),
+            ),
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: _onThemeChange,
+                  child: Icon(
+                    themeProvider.getTheme == ThemeData.light()
+                        ? Icons.light_mode
+                        : Icons.dark_mode,
+                  ),
+                ),
+                SizedBox(width: 20),
+                DropdownButton(
+                  value: localProvider.getLocal,
+                  items: _locales
+                      .map(
+                        (l) => DropdownMenuItem(
+                          value: l,
+                          child: Text(
+                            l.toString(),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: _onLocalChanged,
+                ),
+              ],
+            ),
+          ],
+        ),
+        // backgroundColor: Color(0xffE8DEF8),
+      ),
       body: Center(
         child: Container(
           child: Row(
