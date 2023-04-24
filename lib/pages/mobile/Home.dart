@@ -1,29 +1,60 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_box/components/PhotoWaterMark/PhotoWatermark.dart';
+import 'package:flutter_box/utils/RandomColor.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  void _navTo(path) {
-    if (path == 'photo') {
-      Navigator.of(context).push(CupertinoPageRoute(builder: (context) {
-        return PhotoWaterMark();
-      }));
-    }
+  List _homeNavData = [];
+
+  void initState() {
+    super.initState();
+    _init();
   }
 
-  Future<File> _takeWaterMark(context) async {
+  void dispose() {
+    super.dispose();
+  }
+
+  _init() {
+    _homeNavData = [
+      {
+        'label': '水印相机',
+        'callback': () => _takeWaterMark(context),
+      },
+      {
+        'label': '秒表',
+        'callback': () => _navTo('stopWatch'),
+      },
+      {
+        'label': 'webview',
+        'callback': () => _navTo('webview'),
+      },
+      {
+        'label': 'permission',
+        'callback': () => _navTo('permission'),
+      },
+      {
+        'label': 'network',
+        'callback': () => _navTo('networkStatus'),
+      },
+    ];
+  }
+
+  _takeWaterMark(context) async {
+    List<CameraDescription> _cameras = await availableCameras(); // 获取可用相机列表
+
     return await Navigator.of(context).push(
       PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, Animation<double> animation,
             Animation<double> secondaryAnimation) {
-          return PhotoWaterMark();
+          return PhotoWaterMark(
+            cameras: _cameras,
+          );
         },
         transitionsBuilder: ((context, animation, secondaryAnimation, child) =>
             FadeTransition(
@@ -34,70 +65,48 @@ class _HomeState extends State<Home> {
     );
   }
 
+  void _navTo(to) {
+    print(to);
+    if (to == 'stopWatch') {
+      Navigator.of(context).pushNamed('/stopWatch');
+    } else if (to == 'networkStatus') {
+      Navigator.of(context).pushNamed('/networkStatus');
+    } else if (to == 'permission') {
+      Navigator.of(context).pushNamed('/permission');
+    } else if (to == 'webview') {
+      Navigator.of(context).pushNamed('/webview');
+    }
+  }
+
   Widget build(context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Box'),
+        backgroundColor: RandomColor.getColor(),
       ),
       body: Center(
-        child: GridView(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 1.0,
-          ),
-          children: [
-            Container(
-              alignment: Alignment.center,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  _takeWaterMark(context);
-                },
-                icon: Icon(Icons.photo_camera),
-                label: Text('watermark'),
-              ),
+        child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 1.0,
             ),
-            Container(
-              alignment: Alignment.center,
-              child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.link),
-                label: Text('webview'),
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.beach_access),
-                label: Text('permission'),
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.all_inclusive),
-                label: Text('demo'),
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.cake),
-                label: Text('demo'),
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.free_breakfast),
-                label: Text('demo'),
-              ),
-            ),
-          ],
-        ),
+            itemCount: _homeNavData.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => _homeNavData[index]['callback'](),
+                child: Container(
+                  color: RandomColor.getColor().withOpacity(0.5),
+                  alignment: Alignment.center,
+                  child: Text(
+                    _homeNavData[index]['label'],
+                    style: TextStyle(
+                      color: RandomColor.getColor(),
+                    ),
+                  ),
+                ),
+              );
+            }),
       ),
     );
   }

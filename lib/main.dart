@@ -6,6 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_box/common/LocalConfig.dart';
 import 'package:flutter_box/common/ThemeConfig.dart';
 import 'package:flutter_box/components/StopWatch/StopWatchBloc.dart';
+import 'package:flutter_box/pages/mobile/routes.dart';
+import 'package:flutter_box/pages/web/routes.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -95,6 +98,9 @@ class _MainAppState extends State<MainApp> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: localData,
+      navigatorObservers: [FlutterSmartDialog.observer],
+      builder: FlutterSmartDialog.init(),
+      routes: routes,
     );
   }
 }

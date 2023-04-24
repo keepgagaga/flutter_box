@@ -1,10 +1,14 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as p;
@@ -12,18 +16,22 @@ import 'package:path/path.dart' as p;
 final GlobalKey _cameraKey = GlobalKey();
 
 class PhotoWaterMark extends StatefulWidget {
+  final List<CameraDescription> cameras; // 直接传相机数组就行
+
+  const PhotoWaterMark({super.key, required this.cameras});
+
   _PhotoWaterMarkState createState() => _PhotoWaterMarkState();
 }
 
 class _PhotoWaterMarkState extends State<PhotoWaterMark>
     with WidgetsBindingObserver {
   XFile? _image;
-
   TakeStatus _takeStatus = TakeStatus.preparing;
-
   late CameraController _cameraController;
-
   bool _isCapturing = false;
+  DateTime _time = DateTime.now();
+  late Timer _timer;
+  String _cameraDirection = 'rear'; // rear front
 
   @override
   void initState() {
@@ -36,6 +44,7 @@ class _PhotoWaterMarkState extends State<PhotoWaterMark>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _cameraController.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -52,28 +61,66 @@ class _PhotoWaterMarkState extends State<PhotoWaterMark>
   }
 
   void _initCamera() async {
-    List<CameraDescription> _cameras;
-    _cameras = await availableCameras();
+    _timer = Timer.periodic(Duration(seconds: 1), _handTimeUpdate);
+
     _cameraController = CameraController(
-      _cameras.first,
+      _cameraDirection == 'rear' ? widget.cameras[0] : widget.cameras[1],
       ResolutionPreset.high,
       enableAudio: false,
-      imageFormatGroup: ImageFormatGroup.jpeg,
+      // imageFormatGroup: ImageFormatGroup.jpeg,
     );
     _cameraController.addListener(() {
       if (mounted) {
         setState(() {});
       }
     });
-    await _cameraController.initialize();
+
+    final status = await Permission.camera.request();
+    print(status);
+
+    if (status.isGranted) {
+      await _cameraController.initialize();
+
+      _cameraController.setFlashMode(FlashMode.off);
+      if (mounted) {
+        setState(() {
+          _takeStatus = TakeStatus.taking;
+        });
+      }
+    } else if (status.isPermanentlyDenied) {
+      showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text('无相机权限'),
+            content: Text('请前往设置打开'),
+            actions: [
+              CupertinoDialogAction(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                child: const Text('Yes'),
+              ),
+            ],
+          );
+        },
+      );
+    } else if (status.isDenied) {
+      await Permission.camera.request();
+    }
+  }
+
+  void _handTimeUpdate(t) {
     if (mounted) {
       setState(() {
-        _takeStatus = TakeStatus.taking;
+        _time = DateTime.now();
       });
     }
   }
 
   void _toggleFlash() {
+    print(_cameraController.value.flashMode);
     switch (_cameraController.value.flashMode) {
       case FlashMode.auto:
         _cameraController.setFlashMode(FlashMode.always);
@@ -86,6 +133,13 @@ class _PhotoWaterMarkState extends State<PhotoWaterMark>
         _cameraController.setFlashMode(FlashMode.off);
         break;
     }
+  }
+
+  void _flipCamera() {
+    setState(() {
+      _cameraDirection = _cameraDirection == 'rear' ? 'front' : 'rear';
+    });
+    _initCamera();
   }
 
   void _takePicture() async {
@@ -116,27 +170,44 @@ class _PhotoWaterMarkState extends State<PhotoWaterMark>
           await _tempImage.toByteData(format: ui.ImageByteFormat.png);
       Uint8List imageBytes =
           byteData!.buffer.asUint8List(); // 图片数据， 可使用 Image.memory 加载显示
-      String basePath = await findSavePath();
-      File file = File('$basePath${DateTime.now().millisecondsSinceEpoch}.jpg');
-      file.writeAsBytesSync(imageBytes);
-      Navigator.of(context).pop(file);
+      if (await Permission.storage.request().isGranted) {
+        final saveResult = await ImageGallerySaver.saveImage(imageBytes);
+        print(saveResult);
+        if (saveResult['isSuccess']) {
+          SmartDialog.showToast('Save Photo Success');
+          await Future.delayed(Duration(seconds: 1));
+          Navigator.of(context).pop();
+        } else {
+          SmartDialog.showToast('Save Photo Fail');
+        }
+      } else {
+        showCupertinoDialog(
+            context: context,
+            builder: (context) {
+              return CupertinoAlertDialog(
+                title: Text('无权限'),
+                content: Text('保存拍摄的照片需要此权限，是否跳转到设置页面？'),
+                actions: [
+                  CupertinoDialogAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('No'),
+                  ),
+                  CupertinoDialogAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Yes'),
+                  ),
+                ],
+              );
+            });
+      }
     } catch (e) {
       print(e);
     }
     _isCapturing = false;
-  }
-
-  Future<String> findSavePath([String? basePath]) async {
-    final directory = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
-    if (basePath == null) return directory!.path;
-    String _saveDir = p.join(directory!.path, basePath);
-    Directory root = Directory(_saveDir);
-    if (!root.existsSync()) {
-      await root.create();
-    }
-    return _saveDir;
   }
 
   Widget _buildCameraArea() {
@@ -181,7 +252,7 @@ class _PhotoWaterMarkState extends State<PhotoWaterMark>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    DateTime.now().toString(),
+                    '${_time.day}:${_time.hour}:${_time.minute}:${_time.second}',
                     style: TextStyle(color: Colors.white),
                   ),
                 ],
@@ -201,12 +272,8 @@ class _PhotoWaterMarkState extends State<PhotoWaterMark>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            onPressed: () => Navigator.of(context).pop,
+            onPressed: () => Navigator.of(context).pop(),
             icon: Icon(Icons.arrow_back),
-          ),
-          IconButton(
-            onPressed: _toggleFlash,
-            icon: Icon(Icons.flash_auto),
           ),
         ],
       ),
@@ -218,8 +285,8 @@ class _PhotoWaterMarkState extends State<PhotoWaterMark>
       bottom: 50,
       child: _takeStatus == TakeStatus.confirm
           ? Container(
-              padding: EdgeInsets.only(left: 30, right: 30),
               width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -229,20 +296,41 @@ class _PhotoWaterMarkState extends State<PhotoWaterMark>
                   ),
                   IconButton(
                     onPressed: _confirm,
-                    icon: Icon(Icons.confirmation_num),
+                    icon: Icon(Icons.save),
                   ),
                 ],
               ),
             )
           : Container(
               width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(left: 30, right: 30),
               alignment: Alignment.center,
-              child: IconButton(
-                onPressed: _takePicture,
-                icon: Icon(
-                  Icons.photo_camera,
-                  size: 40,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: _toggleFlash,
+                    icon: Icon(
+                      _cameraController.value.flashMode == FlashMode.auto
+                          ? Icons.flash_auto
+                          : (_cameraController.value.flashMode ==
+                                  FlashMode.always
+                              ? Icons.flash_on
+                              : Icons.flash_off),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: _takePicture,
+                    icon: Icon(
+                      Icons.photo_camera,
+                      size: 40,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: _flipCamera,
+                    icon: Icon(Icons.flip_camera_android),
+                  ),
+                ],
               ),
             ),
     );

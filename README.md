@@ -12,20 +12,21 @@ TODO:
 * K 线图 
 * 自定义 context 菜单 
 * 菜单栏和级联菜单 
-* 路由管理 
+* 路由管理 ✅
 * 显式动画demo集合 web ✅
 * 隐式动画demo集合 web ✅
 * 绘制demo集合 web ✅
 * 推送通知 iOS Android
 * 地图 SDK 嵌入
-* 权限索取处理
+* 权限索取处理 ✅
 * 编辑器 desktop
 * 计算器 desktop 
 * 热更新 Android desktop
 * flutter web 嵌入传统网页
 * flutter web 启动动画 ✅
 * 音频播放 Linux 
-* 网络状态监测
-* 照片水印
+* 网络状态监测 ✅
+* 照片水印 iOS ✅
 * webview android ios 
+* 蓝牙 
 
