@@ -41,6 +41,10 @@ class _HomeState extends State<Home> {
         'label': 'network',
         'callback': () => _navTo('networkStatus'),
       },
+      {
+        'label': 'videoPlayer',
+        'callback': () => _navTo('videoPlayer'),
+      },
     ];
   }
 
@@ -67,15 +71,7 @@ class _HomeState extends State<Home> {
 
   void _navTo(to) {
     print(to);
-    if (to == 'stopWatch') {
-      Navigator.of(context).pushNamed('/stopWatch');
-    } else if (to == 'networkStatus') {
-      Navigator.of(context).pushNamed('/networkStatus');
-    } else if (to == 'permission') {
-      Navigator.of(context).pushNamed('/permission');
-    } else if (to == 'webview') {
-      Navigator.of(context).pushNamed('/webview');
-    }
+    Navigator.of(context).pushNamed('/$to');
   }
 
   Widget build(context) {

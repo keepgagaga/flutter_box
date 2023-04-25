@@ -8,7 +8,7 @@ TODO:
 * Bloc 状态管理 ✅
 * 多图滚动及缓存
 * 图片编辑保存
-* 视频连续播放
+* 视频连续播放 
 * K 线图 
 * 自定义 context 菜单 
 * 菜单栏和级联菜单 
@@ -27,6 +27,6 @@ TODO:
 * 音频播放 Linux 
 * 网络状态监测 ✅
 * 照片水印 iOS ✅
-* webview android ios 
+* webview ios ✅
 * 蓝牙 
 
