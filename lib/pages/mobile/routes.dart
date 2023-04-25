@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_box/pages/mobile/ImageEdit.dart';
 import 'package:flutter_box/pages/mobile/NetworkStatus.dart';
 import 'package:flutter_box/pages/mobile/PermissionPage.dart';
 import 'package:flutter_box/pages/mobile/StopWatchPage.dart';
@@ -11,4 +12,5 @@ Map<String, WidgetBuilder> routes = {
   '/permission': (context) => PermissionPage(),
   '/webview': (context) => WebViewPage(),
   '/videoPlayer': (context) => VideoPageView(),
+  '/imageEdit': (context) => ImageEdit(),
 };

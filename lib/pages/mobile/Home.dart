@@ -45,6 +45,10 @@ class _HomeState extends State<Home> {
         'label': 'videoPlayer',
         'callback': () => _navTo('videoPlayer'),
       },
+      {
+        'label': 'imageEdit',
+        'callback': () => _navTo('imageEdit'),
+      },
     ];
   }
 
