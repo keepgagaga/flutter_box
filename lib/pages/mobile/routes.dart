@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_box/pages/mobile/CompleteGuide.dart';
 import 'package:flutter_box/pages/mobile/ImageEdit.dart';
 import 'package:flutter_box/pages/mobile/NetworkStatus.dart';
 import 'package:flutter_box/pages/mobile/PermissionPage.dart';
@@ -13,4 +14,5 @@ Map<String, WidgetBuilder> routes = {
   '/webview': (context) => WebViewPage(),
   '/videoPlayer': (context) => VideoPageView(),
   '/imageEdit': (context) => ImageEdit(),
+  '/canvas': (context) => CompleteGuide(begin: true),
 };

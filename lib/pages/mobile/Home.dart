@@ -49,6 +49,10 @@ class _HomeState extends State<Home> {
         'label': 'imageEdit',
         'callback': () => _navTo('imageEdit'),
       },
+      {
+        'label': 'canvas',
+        'callback': () => _navTo('canvas'),
+      },
     ];
   }
 
