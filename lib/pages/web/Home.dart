@@ -10,6 +10,7 @@ import 'package:flutter_box/components/InnerShadowExample.dart';
 import 'package:flutter_box/components/RotateAnima.dart';
 import 'package:flutter_box/components/StopWatch/StopWatch.dart';
 import 'package:flutter_box/components/TweenAnimationBuilderExample.dart';
+import 'package:flutter_box/pages/web/AppTitle.dart';
 import 'package:flutter_box/pages/web/components/CustomAppbar.dart';
 import 'package:flutter_box/pages/web/components/LeftNav.dart';
 import 'package:flutter_box/pages/web/components/RightContent.dart';
@@ -47,49 +48,46 @@ class _HomeState extends State<Home> {
     themeProvider = Provider.of<ThemeConfig>(context);
     localProvider = Provider.of<LocalConfig>(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: RandomColor.getColor(),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Flutter Box',
-              style: TextStyle(
-                color: RandomColor.getColor(),
+    AppBar _appbar = AppBar(
+      backgroundColor: RandomColor.getColor(),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          AppTitle(),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: _onThemeChange,
+                child: Icon(
+                  themeProvider.getTheme == ThemeData.light()
+                      ? Icons.light_mode
+                      : Icons.dark_mode,
+                ),
               ),
-            ),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: _onThemeChange,
-                  child: Icon(
-                    themeProvider.getTheme == ThemeData.light()
-                        ? Icons.light_mode
-                        : Icons.dark_mode,
-                  ),
-                ),
-                SizedBox(width: 20),
-                DropdownButton(
-                  value: localProvider.getLocal,
-                  items: _locales
-                      .map(
-                        (l) => DropdownMenuItem(
-                          value: l,
-                          child: Text(
-                            l.toString(),
-                          ),
+              SizedBox(width: 20),
+              DropdownButton(
+                value: localProvider.getLocal,
+                items: _locales
+                    .map(
+                      (l) => DropdownMenuItem(
+                        value: l,
+                        child: Text(
+                          l.toString(),
                         ),
-                      )
-                      .toList(),
-                  onChanged: _onLocalChanged,
-                ),
-              ],
-            ),
-          ],
-        ),
-        // backgroundColor: Color(0xffE8DEF8),
+                      ),
+                    )
+                    .toList(),
+                onChanged: _onLocalChanged,
+              ),
+            ],
+          ),
+        ],
       ),
+      // backgroundColor: Color(0xffE8DEF8),
+    );
+
+    return Scaffold(
+      appBar: _appbar,
       body: Center(
         child: Container(
           child: Row(
