@@ -30,3 +30,5 @@ TODO:
 * webview ios ✅
 * 蓝牙 
 * FFmpeg
+* channel 
+* archive 
