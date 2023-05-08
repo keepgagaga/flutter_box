@@ -12,6 +12,16 @@ class LeftNav extends StatefulWidget {
 class _LeftNavState extends State<LeftNav> {
   int _selectedIndex = 0;
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Widget build(context) {
     Size size = MediaQuery.of(context).size;
 
@@ -48,7 +58,7 @@ class _LeftNavState extends State<LeftNav> {
                 NavigationRailDestination(
                   icon: Icon(Icons.star_border),
                   selectedIcon: Icon(Icons.star),
-                  label: Text('Three'),
+                  label: Text('About'),
                 ),
               ],
             ),
