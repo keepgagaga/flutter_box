@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:universal_html/html.dart';
@@ -8,11 +9,15 @@ class WebBox extends StatefulWidget {
 
 class _WebBoxState extends State<WebBox> {
   void initState() {
-    ui.platformViewRegistry.registerViewFactory(
-        'WebBox',
-        (int viewId) => IFrameElement()
-          ..style.border = 'none'
-          ..src = 'https://sand-web-box.vercel.app/#/');
+    // if (kIsWeb) {
+    //   ui.platformViewRegistry.registerViewFactory(
+    //     'WebBox',
+    //     (int viewId) => IFrameElement()
+    //       ..style.border = 'none'
+    //       ..src = 'https://sand-web-box.vercel.app/#/',
+    //   );
+    // }
+
     super.initState();
   }
 
