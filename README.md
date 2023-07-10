@@ -1,5 +1,6 @@
 # 一个跨所有平台的 app
 包括 Android、iOS、macOS、Windows、Linux、web，主要是为了探索各个平台的共性和差异，因为很多组件为各大平台上和在 web 上差不多，前期为了便于分享，会优先做 web 平台，web 访问地址：https://flutter-box.vercel.app/#/
+（这个项目仔细想其实有趣的点很多，比如后续针对桌面端好好玩下 C++ 等）
 
 TODO:
 * 新版国际化 web ✅

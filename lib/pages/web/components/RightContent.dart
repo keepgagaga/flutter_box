@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_box/pages/web/About.dart';
+import 'package:flutter_box/pages/web/components/SolarSystem.dart';
 
 class RightContent extends StatefulWidget {
   final int navIndex;
@@ -8,8 +9,15 @@ class RightContent extends StatefulWidget {
 }
 
 class _RightContentState extends State<RightContent> {
+  List _widgets = [];
+
   @override
   void initState() {
+    _widgets = [
+      SolarSystem(begin: true),
+      Text(widget.navIndex.toString()),
+      About(),
+    ];
     super.initState();
   }
 
@@ -23,8 +31,7 @@ class _RightContentState extends State<RightContent> {
       width: MediaQuery.of(context).size.width - 70,
       alignment: Alignment.center,
       child: Center(
-        child:
-            widget.navIndex == 2 ? About() : Text(widget.navIndex.toString()),
+        child: _widgets[widget.navIndex],
       ),
     );
   }
