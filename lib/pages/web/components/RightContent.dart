@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_box/pages/web/About.dart';
-import 'package:flutter_box/pages/web/components/SolarSystem.dart';
+import 'package:flutter_box/pages/web/One.dart';
+import 'package:flutter_box/pages/web/Three.dart';
+import 'package:flutter_box/pages/web/Two.dart';
 
 class RightContent extends StatefulWidget {
   final int navIndex;
@@ -9,29 +10,13 @@ class RightContent extends StatefulWidget {
 }
 
 class _RightContentState extends State<RightContent> {
-  List _widgets = [];
-
-  @override
-  void initState() {
-    _widgets = [
-      SolarSystem(begin: true),
-      Text(widget.navIndex.toString()),
-      About(),
-    ];
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  List<Widget> _contents = [One(), Two(), Three()];
 
   Widget build(context) {
     return Container(
       width: MediaQuery.of(context).size.width - 70,
-      alignment: Alignment.center,
       child: Center(
-        child: _widgets[widget.navIndex],
+        child: _contents[widget.navIndex],
       ),
     );
   }

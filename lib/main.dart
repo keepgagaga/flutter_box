@@ -6,8 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_box/common/LocalConfig.dart';
 import 'package:flutter_box/common/ThemeConfig.dart';
 import 'package:flutter_box/components/StopWatch/StopWatchBloc.dart';
-import 'package:flutter_box/pages/mobile/routes.dart';
-import 'package:flutter_box/pages/web/routes.dart';
+import 'package:flutter_box/pages/desktop/routes.dart' as desktopRoutes;
+import 'package:flutter_box/pages/mobile/routes.dart' as mobileRoutes;
+import 'package:flutter_box/pages/web/routes.dart' as webRoutes;
+import 'package:flutter_box/utils/Plat.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
@@ -34,9 +36,10 @@ void main() async {
             create: (_) => StopWatchBloc(),
           ),
         ],
-        child: MainApp(),
+        child: MainApp(routes: webRoutes.routes),
       ),
     );
+    return;
   } else if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
     await windowManager.ensureInitialized();
 
@@ -67,12 +70,18 @@ void main() async {
           create: (_) => StopWatchBloc(),
         ),
       ],
-      child: MainApp(),
+      child: MainApp(
+        routes: Plat().isMobile() ? mobileRoutes.routes : desktopRoutes.routes,
+      ),
     ),
   );
 }
 
 class MainApp extends StatefulWidget {
+  final routes;
+
+  const MainApp({super.key, required this.routes});
+
   _MainAppState createState() => _MainAppState();
 }
 
@@ -100,7 +109,7 @@ class _MainAppState extends State<MainApp> {
       locale: localData,
       navigatorObservers: [FlutterSmartDialog.observer],
       builder: FlutterSmartDialog.init(),
-      routes: routes,
+      routes: widget.routes,
     );
   }
 }

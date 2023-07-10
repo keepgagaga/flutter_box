@@ -48,9 +48,9 @@ dependencies:
   connectivity_plus: ^3.0.4
   webview_flutter: ^4.2.0
   video_player: ^2.6.1
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  archive: ^3.3.7
+  file_picker: ^5.2.11
+  universal_html: ^2.2.3
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
