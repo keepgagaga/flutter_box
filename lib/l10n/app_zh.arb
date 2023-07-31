@@ -1,0 +1,8 @@
+{
+    "implicitlyAnima": "隐式动画",
+    "@implicitlyAnima": {
+        "description": "略"
+    },
+    "animatedWidget": "显式动画",
+    "draw": "绘制"
+}

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_box/pages/desktop/LeftArea.dart';
+import 'package:flutter_box/pages/desktop/One.dart';
+import 'package:flutter_box/pages/desktop/Three.dart';
+import 'package:flutter_box/pages/desktop/Two.dart';
 import 'package:flutter_box/utils/SizeFit.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -7,6 +11,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with WindowListener {
+  int _contentType = 0;
+  List<Widget> _contents = [One(), Two(), Three()];
+
   @override
   void initState() {
     windowManager.addListener(this);
@@ -26,23 +33,41 @@ class _HomeState extends State<Home> with WindowListener {
     setState(() {});
   }
 
+  void _onNavChange(index) {
+    setState(() {
+      _contentType = index;
+    });
+  }
+
   Widget build(BuildContext context) {
     SizeFit.initialize(context);
+    Size size = MediaQuery.of(context).size;
+    double leftW = 70;
+    double rightW = (size.width - leftW) < 480 ? 480 : (size.width - leftW);
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Flutter Box'),
-        toolbarHeight: 30,
-      ),
       body: Container(
-          // width: 750.0.rpx,
-          // height: 750.0.rpx,
-          ),
+        child: Row(
+          children: [
+            LeftArea(
+              width: leftW,
+              onNavChange: _onNavChange,
+            ),
+            Container(
+              width: rightW,
+              height: size.height,
+              alignment: Alignment.center,
+              child: _contents[_contentType],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   @override
   void onWindowEvent(String eventName) {
-    print('[WindowManager] onWindowEvent: $eventName');
+    // print('[WindowManager] onWindowEvent: $eventName');
   }
 
   @override

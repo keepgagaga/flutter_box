@@ -1,0 +1,8 @@
+{
+    "implicitlyAnima": "ImplicitlyAnima",
+    "@implicitlyAnima": {
+        "description": "略 // 修改后记得运行 flutter gen-l10n 重新生成国际化文件"
+    },
+    "animatedWidget": "AnimatedWidget",
+    "draw": "draw"
+}
